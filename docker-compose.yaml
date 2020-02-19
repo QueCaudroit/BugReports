@@ -4,8 +4,6 @@ services:
     build: .
     ports:
       - 5001:5001
-    volumes:
-      - ".:/source"
     depends_on:
       - db
   db:
