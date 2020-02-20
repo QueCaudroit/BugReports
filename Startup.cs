@@ -27,8 +27,7 @@ namespace BugReportModule
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<ApplicationDbContext>();//options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddIdentity<User, IdentityRole<long>>().AddEntityFrameworkStores<ApplicationDbContext,long>().AddDefaultTokenProviders();
+            services.AddDbContext<ApplicationDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
