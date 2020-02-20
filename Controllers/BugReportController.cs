@@ -27,5 +27,15 @@ namespace BugReportModule.Controllers
                 return reports;
             }
         }
+        [HttpPost]
+        public BugReport Save([FromBody] BugReport report)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                context.BugReports.Add(report);
+                context.SaveChanges();
+                return report;
+            }
+        }
     }
 }
