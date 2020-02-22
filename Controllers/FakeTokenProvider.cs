@@ -11,12 +11,14 @@ namespace BugReportModule.Controllers
     [Route("[controller]")]
     public class FakeTokenProviderController : ControllerBase
     {
+        private int userID = 0;
         private readonly ILogger<FakeTokenProviderController> _logger;
 
         public FakeTokenProviderController(ILogger<FakeTokenProviderController> logger)
         {
             _logger = logger;
         }
+
 
         [HttpGet]
         public string Get([FromQuery]string role)
@@ -27,7 +29,8 @@ namespace BugReportModule.Controllers
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim("roles", role ?? "admin")
+                    new Claim("roles", role ?? "admin"),
+                    new Claim("sub", $"{userID}")
                 }),
                 SigningCredentials = JwtCredentials.credentials
             };

@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace BugReportModule.Controllers
 {
@@ -31,6 +33,8 @@ namespace BugReportModule.Controllers
         [HttpPost]
         public BugReport Save([FromBody] BugReport report)
         {
+            var playerID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            report.PlayerID = playerID;
             using (var context = new ApplicationDbContext())
             {
                 context.BugReports.Add(report);
