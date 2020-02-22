@@ -17,4 +17,4 @@ ENV PATH="${PATH}:/root/.dotnet/tools"
 COPY . ./
 RUN dotnet restore
 
-CMD [ "dotnet", "run", "--urls", "https://0.0.0.0:5001" ]
+CMD [ "bash", "run.sh" ]
