@@ -22,12 +22,29 @@ namespace BugReportModule.Controllers
 
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public IEnumerable<BugReport> Get()
+        public IEnumerable<BugReport> Get([FromQuery] string playerID, [FromQuery] string date, [FromQuery] string description, [FromQuery] string logs)
         {
             using (var context = new ApplicationDbContext())
             {
-                var reports = context.BugReports.ToList();
-                return reports;
+                IEnumerable<BugReport> reports = context.BugReports;
+                if (playerID != null)
+                {
+                    reports = reports.Where(r => r.PlayerID == Convert.ToInt32(playerID));
+                }
+                if (date != null)
+                {
+                    var parsedDate = DateTime.ParseExact(date, "yyyyMMdd", null);
+                    reports = reports.Where(r => r.Date >= parsedDate && r.Date < parsedDate.AddDays(1.0));
+                }
+                if (description != null)
+                {
+                    reports = reports.Where(r => r.BugDescription.Contains(description));
+                }
+                if (logs != null)
+                {
+                    reports = reports.Where(r => r.Logs.Contains(logs));
+                }
+                return reports.ToList();
             }
         }
         [HttpPost]
