@@ -4,11 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using BugReportModule.Secret;
 
 namespace BugReportModule.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class BugReportController : ControllerBase
     {
         private readonly ILogger<BugReportController> _logger;
@@ -19,6 +24,7 @@ namespace BugReportModule.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IEnumerable<BugReport> Get()
         {
             using (var context = new ApplicationDbContext())

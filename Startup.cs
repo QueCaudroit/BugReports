@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using BugReportModule.Secret;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace BugReportModule
 {
@@ -28,6 +30,11 @@ namespace BugReportModule
         {
             services.AddControllers();
             services.AddDbContext<ApplicationDbContext>();
+            Console.WriteLine(JwtBearerDefaults.AuthenticationScheme);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = JwtCredentials.validationParameters;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +49,7 @@ namespace BugReportModule
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
