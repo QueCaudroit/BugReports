@@ -57,7 +57,8 @@ Returns the saved Bug Report with its ID, playerID and date
 GET `https://{IP_ADDRESS}/BugReport?playerID=0&date=20200223&description=cliq&logs=ERROR`
 
 Returns the Bug Reports that match all these filters.
-description/logs filters match if the text is included in the description/logs. date filter format is `yyyyMMdd`
+description/logs filters match if the text is included in the description/logs. date filter format is `yyyyMMdd`.
+All filters are optional
 
 ### Posting large files
 
