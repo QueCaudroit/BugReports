@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace BugReportModule
 {
@@ -15,5 +16,6 @@ namespace BugReportModule
         {          
             this.Date = DateTime.UtcNow;
         }
+        public List<BugReportFile> BugReportFiles { get; set; }
     }
 }

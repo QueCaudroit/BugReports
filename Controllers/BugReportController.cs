@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace BugReportModule.Controllers
 {
@@ -22,14 +23,14 @@ namespace BugReportModule.Controllers
 
         [HttpGet]
         [Authorize(Roles = "admin")]
-        public IEnumerable<BugReport> Get([FromQuery] string playerID, [FromQuery] string date, [FromQuery] string description, [FromQuery] string logs)
+        public IEnumerable<BugReport> Get([FromQuery] string playerId, [FromQuery] string date, [FromQuery] string description, [FromQuery] string logs)
         {
             using (var context = new ApplicationDbContext())
             {
-                IEnumerable<BugReport> reports = context.BugReports;
-                if (playerID != null)
+                IEnumerable<BugReport> reports = context.BugReports.Include(report => report.BugReportFiles);
+                if (playerId != null)
                 {
-                    reports = reports.Where(r => r.PlayerID == Convert.ToInt32(playerID));
+                    reports = reports.Where(r => r.PlayerID == Convert.ToInt32(playerId));
                 }
                 if (date != null)
                 {
@@ -50,12 +51,14 @@ namespace BugReportModule.Controllers
         [HttpPost]
         public BugReport Save([FromBody] BugReport report)
         {
-            var playerID = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            report.PlayerID = playerID;
+            var playerId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            report.PlayerID = playerId;
             using (var context = new ApplicationDbContext())
             {
                 context.BugReports.Add(report);
                 context.SaveChanges();
+                context.Entry(report).Reload();
+                context.Entry(report).Collection(report => report.BugReportFiles).Load();
                 return report;
             }
         }

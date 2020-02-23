@@ -1,6 +1,8 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /source
 
+RUN mkdir /uploadedFiles
+
 COPY ./BugReportModule.csproj ./BugReportModule.csproj
 RUN dotnet add package Microsoft.EntityFrameworkCore
 RUN dotnet add package Microsoft.EntityFrameworkCore.Design
