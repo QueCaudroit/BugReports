@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: aspnetapp:develop
+        image: quentincaudroit/bug_report_module:1.0
         ports:
         - containerPort: 5001
