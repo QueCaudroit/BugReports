@@ -58,7 +58,7 @@ namespace BugReportModule.Controllers
                 context.BugReports.Add(report);
                 context.SaveChanges();
                 context.Entry(report).Reload();
-                context.Entry(report).Collection(report => report.BugReportFiles).Load();
+                context.Entry(report).Collection(r => r.BugReportFiles).Load();
                 return report;
             }
         }
